@@ -44,16 +44,21 @@ Now that we know our topic structure and payload, lets publish that data to Amaz
 1. Log in to AWS Console and navigate to: **Services $\to$ Database $\to$ Amazon Timestream**
   - In our case the database *stdemoDB* is already created, but if you will be doing it in your own account create a database:
 2. Create a table with following name *env_sensor_data-XXXXXXXXXXXXXXXX*, where the *XXXXXXXXXXXXXXXX* is the value assigned to your board (*a61b1620323443M0* in my case). Leave the *memory store retention* value to *12 hours*, but change the magnetic store retention to *10 **days***
-
+<!-- ![screenshot for creating Amazon Timestream table](/images/createTimestreamTable.png) -->
+<img src="images/createTimestreamTable.png" width="50%" height="50%">
 
 ### AWS IoT Core Rules
 
 1. In the AWS Console navigate to **Services $\to$ Internet of Things $\to$ IoT Core**. On that screen from the left-hand panel chose **Message Routing $\to$ Rules**
-2. Create the rule with the name *toTimestream_a61b1620323443M0* and description *Routing messages sent to topic stm32u5-a61b1620323443M0/env_sensor_data to Timestream database stdemoDB and table env_sensor_data-a61b1620323443M0*. Press **Next**
-3. Enter the SQL statement to get temperature and humidity reading from environmental sensors payload:
+2. Create the rule with the name *toTimestream_XXXXXXXXXXXXXXXX* and description *Routing messages sent to topic stm32u5-XXXXXXXXXXXXXXXX/env_sensor_data to Timestream database stdemoDB and table env_sensor_data-XXXXXXXXXXXXXXXX*. Press **Next**
+<img src="images/iotCoreRuleProperties.png" width="50%" height="50%">
+
+3. Enter the SQL statement to get temperature and humidity reading from environmental sensors payload and press **Next**
 ```sql
-SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-a61b1620323443M0/env_sensor_data'
+SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-XXXXXXXXXXXXXXXX/env_sensor_data'
 ```
-    Press **Next**
+<img src="images/iotCoreRuleSQL.png" width="50%" height="50%">
 
 4. Attache the action. Choose **Timestream table** as the Action, select *stdemoDB* database and *env_sensor_data-XXXXXXXXXXXXXXXX* as a table. Configure the dimension with the dimension name *device_id* and dimension value *${topic(1)}*
+
+<img src="images/iotCoreRuleAction.png" width="50%" height="50%">
