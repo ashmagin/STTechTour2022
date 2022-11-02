@@ -68,14 +68,34 @@ SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-XXXXXXXXXXXXXXXX/env_sensor
 1. In AWS Console navigate to **Services $\to$ Management&Governance $\to$ Amazon Grafana**
 2. Click *Create Workspace*
 3. Enter your identifier (XXXXXXXXXXXXXXXX) as the *Workspace name* and "XXXXXXXXXXXXXXXX Dashboard for visualizing environmental sersors' data" as *Workspace description*. Click **Next**
+
+<img src="images/grafanaWorkspaceName.png" width="50%" height="50%">
+
 4. For Authentication Access, chose *AWS IAM Identity Center*, and for Permission Type *Service managed*. Click **Next**
+
+<img src="images/grafanaAuth.png" width="50%" height="50%">
+
 5. For IAM permission access settings chose *Current account* and select *Amazon Timestream* as a data source. Don't select anything for Notification channels. Click **Next**
+
+<img src="images/grafanaDatasources.png" width="50%" height="50%">
+
 6. Review and click **Create Workspace**
+
 7. In Authentication tab select *Configure Users and Groups* from AWS IAM Identity Center section. Select *Grafana User*
+
+<img src="images/grafanaUser.png" width="50%" height="50%">
+
 8. Select *Grafana User* and in the *Actions* menu click **Make Admin**
+
+<img src="images/grafanaUserMakeAdmin.png" width="50%" height="50%">
+
 9. Click on *Amazon Grafana > Workspaces > XXXXXXXXXXXXXXXX* to return to your Grafana workspace.
+
 10. Open the Grafana workspace by clicking on *Grafana Workspace URL*. Sign with the *grafana* user and the password that will be provided by your instructor.
 11. Click on **AWS $\to$ Data Sources**. Select *Timestream*. Select *N.Virginia (us-east-1)* as AWS Region. Click **Add data source**
+
+<img src="images/grafanaWorkspace.png" width="50%" height="50%">
+
 12. In the Settings select *stdemoDB* as a database, your Timestream table (e.g. *env_sensor_data-XXXXXXXXXXXXXXXX*) and the *temp* as a measure
 13. Create a new dashboard by selecting **+ $\to$ Dashboard**
 14. Add new panel
@@ -84,5 +104,8 @@ SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-XXXXXXXXXXXXXXXX/env_sensor
 SELECT * FROM $__database.$__table WHERE measure_name='$__measure'
 ```
 16. For the time range chose *Last 15 minutes*
+
+<img src="images/grafanaDashboard.png" width="50%" height="50%">
+
 17. Observe the time series chart of the temperature fluctuations.
-18. Save the dashboard as Temperature in Burlington
+18. Save the dashboard as *Temperature in Burlington*
