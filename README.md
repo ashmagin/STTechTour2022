@@ -50,10 +50,10 @@ Now that we know our topic structure and payload, lets publish that data to Amaz
 ### AWS IoT Core Rules
 
 1. In the AWS Console navigate to **Services $\to$ Internet of Things $\to$ IoT Core**. On that screen from the left-hand panel chose **Message Routing $\to$ Rules**
-2. Create the rule with the name *toTimestream_XXXXXXXXXXXXXXXX* and description *Routing messages sent to topic stm32u5-XXXXXXXXXXXXXXXX/env_sensor_data to Timestream database stdemoDB and table env_sensor_data-XXXXXXXXXXXXXXXX*. Press **Next**
+2. Create the rule with the name *toTimestream_XXXXXXXXXXXXXXXX* and description *Routing messages sent to topic stm32u5-XXXXXXXXXXXXXXXX/env_sensor_data to Timestream database stdemoDB and table env_sensor_data-XXXXXXXXXXXXXXXX*. Click **Next**
 <img src="images/iotCoreRuleProperties.png" width="50%" height="50%">
 
-3. Enter the SQL statement to get temperature and humidity reading from environmental sensors payload and press **Next**
+3. Enter the SQL statement to get temperature and humidity reading from environmental sensors payload and click **Next**
 ```sql
 SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-XXXXXXXXXXXXXXXX/env_sensor_data'
 ```
@@ -62,3 +62,27 @@ SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-XXXXXXXXXXXXXXXX/env_sensor
 4. Attache the action. Choose **Timestream table** as the Action, select *stdemoDB* database and *env_sensor_data-XXXXXXXXXXXXXXXX* as a table. Configure the dimension with the dimension name *device_id* and dimension value *${topic(1)}*
 
 <img src="images/iotCoreRuleAction.png" width="50%" height="50%">
+
+### Amazon Grafana
+
+1. In AWS Console navigate to **Services $\to$ Management&Governance $\to$ Amazon Grafana**
+2. Click *Create Workspace*
+3. Enter your identifier (XXXXXXXXXXXXXXXX) as the *Workspace name* and "XXXXXXXXXXXXXXXX Dashboard for visualizing environmental sersors' data" as *Workspace description*. Click **Next**
+4. For Authentication Access, chose *AWS IAM Identity Center*, and for Permission Type *Service managed*. Click **Next**
+5. For IAM permission access settings chose *Current account* and select *Amazon Timestream* as a data source. Don't select anything for Notification channels. Click **Next**
+6. Review and click **Create Workspace**
+7. In Authentication tab select *Configure Users and Groups* from AWS IAM Identity Center section. Select *Grafana User*
+8. Select *Grafana User* and in the *Actions* menu click **Make Admin**
+9. Click on *Amazon Grafana > Workspaces > XXXXXXXXXXXXXXXX* to return to your Grafana workspace.
+10. Open the Grafana workspace by clicking on *Grafana Workspace URL*. Sign with the *grafana* user and the password that will be provided by your instructor.
+11. Click on **AWS $\to$ Data Sources**. Select *Timestream*. Select *N.Virginia (us-east-1)* as AWS Region. Click **Add data source**
+12. In the Settings select *stdemoDB* as a database, your Timestream table (e.g. *env_sensor_data-XXXXXXXXXXXXXXXX*) and the *temp* as a measure
+13. Create a new dashboard by selecting **+ $\to$ Dashboard**
+14. Add new panel
+15. In the Query window, enter:
+```sql
+SELECT * FROM $__database.$__table WHERE measure_name='$__measure'
+```
+16. For the time range chose *Last 15 minutes*
+17. Observe the time series chart of the temperature fluctuations.
+18. Save the dashboard as Temperature in Burlington
