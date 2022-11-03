@@ -63,6 +63,8 @@ SELECT temp_0_c AS temp, rh_pct AS hum FROM 'stm32u5-XXXXXXXXXXXXXXXX/env_sensor
 
 <img src="images/iotCoreRuleAction.png" width="50%" height="50%">
 
+5. For IAM role, search for *toTimestream* role
+
 ### Amazon Grafana
 
 1. In AWS Console navigate to **Services $\to$ Management&Governance $\to$ Amazon Grafana**
